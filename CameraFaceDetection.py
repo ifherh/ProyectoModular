@@ -81,11 +81,42 @@ while True:
         cv2.putText(frame, text, (startX, y),
     			cv2.FONT_HERSHEY_SIMPLEX, 0.45, (0, 0, 255), 2)
         cv2.putText(frame, 'A',(startX,startY),cv2.FONT_HERSHEY_SIMPLEX, 0.45, (0, 255, 0), 2)
-        print("  sX: ", startX, "  sY: ",startY, "  ex: ",endX,"  ey: ",endY)
+        #print("  sX: ", startX, "  sY: ",startY, "  ex: ",endX,"  ey: ",endY)
         w=endX-startX
         h=endY-startY
         
-        np.random.shuffle(frame[startY:startY+h+1,startX:startX+w+1])
+        
+        subframe=frame[startY:startY+h,startX:startX+w]
+        
+        
+        for x in range(0,startX+w,30):
+            yy = x - 30 if x - 30 > 30 else x + 30
+            for y in range(0,yy+h,30):
+                xx = y - 30 if y - 30 > 30 else y + 30
+                cv2.rectangle(subframe, (xx,x), (y,yy),(np.random.randint(150,255), np.random.randint(100,200), np.random.randint(100,200)),cv2.FILLED)
+            
+                
+            #cv2.blur(subframe, (49,49))
+                #subframe[x:x+20, y:yy+20]
+                
+                
+                
+        frame[startY:startY+h,startX:startX+w]=subframe
+        
+        '''
+        subframe=frame[startY:startY+h,startX:startX+w]
+        
+        for y in range(0,startX+w,10):
+
+            for x in range(0,startY+h,10):
+                
+                np.random.shuffle(subframe[x:x+10,y:y+10])
+                
+                
+        frame[startY:startY+h,startX:startX+w]=subframe
+          '''  
+        #np.random.shuffle(detectedface)
+        #np.random.shuffle(frame[startY:startY+h,startX:startX+w])
 
 	# show the output frame
     cv2.imshow("Frame", frame)
@@ -102,4 +133,4 @@ print("ya acabe")
 cv2.destroyAllWindows()
 
 #read
-#python VideoFaceDetection.py --prototxt deploy.prototxt.txt --model res10_300x300_ssd_iter_140000.caffemodel --video video.mov
+#python CameraFaceDetection.py --prototxt deploy.prototxt.txt --model res10_300x300_ssd_iter_140000.caffemodel --video video.mov
