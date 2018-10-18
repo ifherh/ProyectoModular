@@ -1,6 +1,14 @@
+#!/usr/bin/env python3
+# -*- coding: utf-8 -*-
+"""
+Created on Wed Oct 17 08:57:00 2018
+
+@author: Fernanda
+"""
+
 # import the necessary packages
 # import the necessary packages
-from imutils.video import FileVideoStream
+from imutils.video import VideoStream
 import numpy as np
 import argparse
 import time
@@ -13,8 +21,7 @@ ap.add_argument("-m", "--model", required=True,
 	help="path to Caffe pre-trained model")
 ap.add_argument("-c", "--confidence", type=float, default=0.5,
 	help="minimum probability to filter weak detections")
-ap.add_argument("-v", "--video", required=True,
-	help="video")
+
 args = vars(ap.parse_args())
 # load our serialized model from disk
 print("[INFO] loading model...")
@@ -22,13 +29,13 @@ net = cv2.dnn.readNetFromCaffe(args["prototxt"], args["model"])
 
 # initialize the video stream and allow the camera sensor to warm up
 print("[INFO] starting video stream...")
-#vs = VideoStream(src=0).start()
-vs=FileVideoStream(args["video"]).start()
+vs = VideoStream(src=0).start()
+#vs=FileVideoStream(args["video"]).start()
 time.sleep(2.0)
 
 
 # loop over the frames from the video stream
-while vs.more():
+while True:
     
     # grab the frame from the threaded video stream and resize it
     # to have a maximum width of 400 pixels
@@ -118,4 +125,4 @@ cv2.destroyAllWindows()
 
 #This method uses deep learning, in particular a Single Shot Detector (SSD) with ResNet base network architecture.
 #read
-#python VideoFaceDetection.py --prototxt deploy.prototxt.txt --model res10_300x300_ssd_iter_140000.caffemodel --video video.mov
+#python untitled0.py --prototxt deploy.prototxt.txt --model res10_300x300_ssd_iter_140000.caffemodel

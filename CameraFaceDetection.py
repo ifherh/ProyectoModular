@@ -23,8 +23,7 @@ ap.add_argument("-m", "--model", required=True,
 	help="path to Caffe pre-trained model")
 ap.add_argument("-c", "--confidence", type=float, default=0.5,
 	help="minimum probability to filter weak detections")
-ap.add_argument("-v", "--video", required=True,
-	help="video")
+
 args = vars(ap.parse_args())
 # load our serialized model from disk
 print("[INFO] loading model...")
@@ -74,48 +73,31 @@ while True:
     
         # draw the bounding box of the face along with the associated
         # probability
-        text = "{:.2f}%".format(confidence * 100)
         y = startY - 10 if startY - 10 > 10 else startY + 10
-        cv2.rectangle(frame, (startX, startY), (endX, endY),
-                      (0, 255, 0), 1)
-        cv2.putText(frame, text, (startX, y),
-    			cv2.FONT_HERSHEY_SIMPLEX, 0.45, (0, 0, 255), 2)
-        cv2.putText(frame, 'A',(startX,startY),cv2.FONT_HERSHEY_SIMPLEX, 0.45, (0, 255, 0), 2)
-        #print("  sX: ", startX, "  sY: ",startY, "  ex: ",endX,"  ey: ",endY)
+        cv2.rectangle(frame, (startX, startY), (endX, endY),0)
+        
         w=endX-startX
         h=endY-startY
         
         
         subframe=frame[startY:startY+h,startX:startX+w]
-        
-        
         for x in range(0,startX+w,30):
             yy = x - 30 if x - 30 > 30 else x + 30
+            
             for y in range(0,yy+h,30):
                 xx = y - 30 if y - 30 > 30 else y + 30
-                cv2.rectangle(subframe, (xx,x), (y,yy),(np.random.randint(150,255), np.random.randint(100,200), np.random.randint(100,200)),cv2.FILLED)
+                #col = [r, g, b] = frame[x, y]
+                
+                
+
+                # COLORES
+                
+                cv2.rectangle(subframe, (xx,x), (y,yy),(np.random.randint(120,140),np.random.randint(120,135),np.random.randint(130,170)),cv2.FILLED)
             
                 
-            #cv2.blur(subframe, (49,49))
-                #subframe[x:x+20, y:yy+20]
-                
-                
                 
         frame[startY:startY+h,startX:startX+w]=subframe
-        
-        '''
-        subframe=frame[startY:startY+h,startX:startX+w]
-        
-        for y in range(0,startX+w,10):
-
-            for x in range(0,startY+h,10):
-                
-                np.random.shuffle(subframe[x:x+10,y:y+10])
-                
-                
-        frame[startY:startY+h,startX:startX+w]=subframe
-          '''  
-        #np.random.shuffle(detectedface)
+ 
         #np.random.shuffle(frame[startY:startY+h,startX:startX+w])
 
 	# show the output frame
