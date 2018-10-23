@@ -55,15 +55,15 @@ for i in range(0, detections.shape[2]):
         y = startY - 10 if startY - 10 > 10 else startY + 10
         cv2.rectangle(image, (startX, startY), (endX, endY),0)
         
-        w=endX-startX
-        h=endY-startY
+        weight=endX-startX
+        height=endY-startY
         
         
-        subframe=image[startY:startY+h,startX:startX+w]
-        for x in range(0,startX+w,30):
+        subframe=image[startY:startY+height,startX:startX+weight]
+        for x in range(0,startX+weight,30):
             yy = x - 30 if x - 30 > 30 else x + 30
             
-            for y in range(0,yy+h,30):
+            for y in range(0,yy+height,30):
                 xx = y - 30 if y - 30 > 30 else y + 30
                 #col = [r, g, b] = frame[x, y]
                 
@@ -73,7 +73,7 @@ for i in range(0, detections.shape[2]):
                 cv2.rectangle(subframe, (xx,x), (y,yy),(np.random.randint(120,140),np.random.randint(120,135),np.random.randint(130,170)),cv2.FILLED)
             
                 
-        image[startY:startY+h,startX:startX+w]=subframe
+        image[startY:startY+height,startX:startX+weight]=subframe
  
 cv2.imwrite('outputimage.png',image)
 # show the output image

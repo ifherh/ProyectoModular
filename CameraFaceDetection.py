@@ -9,12 +9,13 @@ Created on Tue Oct 16 11:32:17 2018
 # import the necessary packages
 # import the necessary packages
 import imutils
-from imutils.video import FileVideoStream
 from imutils.video import VideoStream
 import numpy as np
 import argparse
 import time
 import cv2
+
+
 # construct the argument parse and parse the arguments
 ap = argparse.ArgumentParser()
 ap.add_argument("-p", "--prototxt", required=True,
@@ -34,6 +35,10 @@ print("[INFO] starting video stream...")
 vs = VideoStream(src=0).start()
 #vs=FileVideoStream(args["video"]).start()
 time.sleep(2.0)
+
+#fourcc = cv2.VideoWriter_fourcc(*'X264')
+#out = cv2.VideoWriter('output.mp4',0x00000021, 20.0, (300,300))
+#out = cv2.VideoWriter('output.avi', -1, 20.0, (640,480))
 
 while True:
 # loop over the frames from the video stream
@@ -76,18 +81,17 @@ while True:
         y = startY - 10 if startY - 10 > 10 else startY + 10
         cv2.rectangle(frame, (startX, startY), (endX, endY),0)
         
-        w=endX-startX
-        h=endY-startY
+        weight=endX-startX
+        height=endY-startY
         
         
-        subframe=frame[startY:startY+h,startX:startX+w]
-        for x in range(0,startX+w,30):
+        subframe=frame[startY:startY+height,startX:startX+weight]
+        for x in range(0,startX+weight,30):
             yy = x - 30 if x - 30 > 30 else x + 30
             
-            for y in range(0,yy+h,30):
+            for y in range(0,yy+height,30):
                 xx = y - 30 if y - 30 > 30 else y + 30
                 #col = [r, g, b] = frame[x, y]
-                
                 
 
                 # COLORES
@@ -95,22 +99,24 @@ while True:
                 cv2.rectangle(subframe, (xx,x), (y,yy),(np.random.randint(120,140),np.random.randint(120,135),np.random.randint(130,170)),cv2.FILLED)
             
                 
-                
-        frame[startY:startY+h,startX:startX+w]=subframe
- 
+        frame[startY:startY+height,startX:startX+weight]=subframe
+        
         #np.random.shuffle(frame[startY:startY+h,startX:startX+w])
 
 	# show the output frame
     cv2.imshow("Frame", frame)
-    
+    #out.write(frame)
     key = cv2.waitKey(1) & 0xFF
     
     	# if the `q` key was pressed, break from the loop
     if key == ord("q"):
         break
 
+#video=cv2.VideoWriter('video.avi',-1,1,(h,w))
 
-#vs.stop()
+
+
+vs.stop()
 print("ya acabe")
 cv2.destroyAllWindows()
 
